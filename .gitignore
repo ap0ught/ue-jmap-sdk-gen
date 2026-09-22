@@ -1,0 +1,15 @@
+# game dumps are huge and never committed — keep them local/external
+*.jmap
+*.jmap.json
+
+# generated SDK is COMMITTED (it is the product) — do not ignore
+# !sdk/
+
+# python
+__pycache__/
+*.pyc
+
+# local probe/CI scratch
+sdkprobe-*/
+probe
+probe.dSYM/

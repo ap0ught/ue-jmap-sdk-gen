@@ -1,0 +1,40 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: |
+          python -m pip install pyyaml
+          sudo apt-get update && sudo apt-get install -y g++
+
+      - name: Rebuild fixture
+        run: python3 fixtures/build_tiny.py
+
+      - name: Generate SDK from fixture
+        run: python3 sdkgen.py generate --jmap fixtures/tiny.jmap --out sdk
+
+      - name: Verify (compile + layout probe)
+        run: python3 sdkgen.py verify --sdk sdk --config game.yaml
+
+      - name: Verify module-filtered build also works
+        run: |
+          python3 sdkgen.py generate --jmap fixtures/tiny.jmap --out sdk-m --modules TinyGame
+          python3 sdkgen.py verify --sdk sdk-m --config game.yaml
+
+      - name: Confirm committed sdk/ is not stale
+        run: |
+          python3 sdkgen.py generate --jmap fixtures/tiny.jmap --out sdk-fresh
+          diff -r sdk sdk-fresh || { echo "sdk/ is stale vs fixture — re-run generate"; exit 1; }

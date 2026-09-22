@@ -1,0 +1,39 @@
+# game.yaml — per-game configuration for the SDK generator.
+#
+# Fork this template repo, then edit this one file for your game:
+#   game:        display name (used in version.json and reports)
+#   modules:     comma-filter of /Script/<Module> class roots. Empty = generate
+#                everything in the dump. Example: ["P9Playable"] to scope to
+#                one gameplay module (see docs/skill.md).
+#   verify:      golden values the generated SDK must match. These are the
+#                regression anchors: sizes of structs/classes and member
+#                offsets. Add the types you actually mod. Absent symbols are
+#                skipped automatically (so module-filtered SDKs still verify).
+#
+# The defaults below match fixtures/tiny.jmap, which is what CI verifies.
+
+game: TinyGame
+engine: "5.5"
+modules: []
+
+verify:
+  structs:
+    Vector: 24
+    TinyBase: 4
+    TinyDerived: 8
+    TinyOrphan: 12
+    TinyNames: 16
+    TinyTopoA: 4
+    TinyTopoB: 4
+    TinyTopoC: 4
+  classes:
+    TinyActor: 64        # 40-byte UObject base + 24 own
+    TinyPlayer: 240      # 40-byte UObject base + 200 own
+  offsets:
+    TinyNames:
+      FName_: 0
+    TinyPlayer:
+      Health: 40          # relative to the UObject base in the emitted struct
+      SoftMesh: 64
+      Spawner: 144
+      Derived: 224

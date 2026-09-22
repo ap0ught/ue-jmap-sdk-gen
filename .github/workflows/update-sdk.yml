@@ -1,0 +1,60 @@
+name: update-sdk
+
+on:
+  workflow_dispatch:
+    inputs:
+      jmap_url:
+        description: "URL to the newer .jmap dump (raw/MinIO/etc.)"
+        required: false
+        type: string
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: |
+          python -m pip install pyyaml
+          sudo apt-get update && sudo apt-get install -y g++
+
+      - name: Download newer dump
+        if: inputs.jmap_url != ''
+        run: curl -fL "${{ inputs.jmap_url }}" -o newer.jmap
+
+      - name: Update SDK from newer dump
+        if: inputs.jmap_url != ''
+        run: python3 sdkgen.py update --jmap newer.jmap --out sdk
+
+      - name: Show update report
+        if: inputs.jmap_url != ''
+        run: cat sdk/update-report.json
+
+      - name: Regenerate from fixture (template self-check)
+        if: inputs.jmap_url == ''
+        run: |
+          python3 fixtures/build_tiny.py
+          python3 sdkgen.py generate --jmap fixtures/tiny.jmap --out sdk
+
+      - name: Verify
+        run: python3 sdkgen.py verify --sdk sdk --config game.yaml
+
+      - name: Commit regenerated SDK
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sdk game.yaml
+          if ! git diff --cached --quiet; then
+            git commit -m "sdk: regenerate/update from latest dump"
+            git push
+          else
+            echo "no SDK changes"
+          fi

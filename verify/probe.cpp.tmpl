@@ -1,0 +1,24 @@
+// probe.cpp — layout verification for a generated jmap SDK.
+// Rendered by sdkgen.py from verify/probe.cpp.tmpl + game.yaml.verify.
+// Compiles against the generated sdk/ headers and static-asserts the
+// golden sizes/offsets recorded for the game. Exit code 0 == layout correct.
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+
+// Has-style preprocessor guards injected per verify symbol,
+// so module-filtered SDKs can skip symbols that are not emitted:
+//__DEFINES__
+
+#include "BasicTypes.hpp"
+#include "Enums.hpp"
+#include "Structs.hpp"
+#include "Classes.hpp"
+
+// Golden checks injected here:
+//__CHECKS__
+
+int main() {
+    puts("probe: all static_asserts passed");
+    return 0;
+}
