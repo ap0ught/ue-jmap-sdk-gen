@@ -1,8 +1,0 @@
-{
-  "game": "TinyGame",
-  "engine": "5.5",
-  "build": "TinyGame-main-CL-12345",
-  "source": "TinyGame-Win64-Shipping.exe",
-  "image_base": "0x140000000",
-  "generator": "jmap2sdk.py"
-}
