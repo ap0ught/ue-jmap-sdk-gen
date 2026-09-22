@@ -2,8 +2,8 @@
 """jmap2sdk.py — generate a C++ layout SDK from a trumank jmap reflection dump.
 
 Usage:
-  python3 jmap2sdk.py --jmap TheAlters.jmap --out sdk --modules P9Playable
-  python3 jmp2sdk.py --jmap TheAlters.jmap --out sdk            # all classes
+  python3 jmap2sdk.py --jmap Game.jmap --out sdk --modules P9Playable
+  python3 jmap2sdk.py --jmap Game.jmap --out sdk            # all classes
 
 Emits: BasicTypes.hpp, Enums.hpp, Structs.hpp, Classes.hpp
 All offsets/sizes come from the dump and are pinned with static_asserts.

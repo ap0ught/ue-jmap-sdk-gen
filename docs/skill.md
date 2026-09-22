@@ -58,7 +58,7 @@ golden sizes/offsets via `verify/probe.cpp.tmpl`.
 - Function RVAs are comments only (native exec minus image base); usable after
   adding a runtime binding layer (`SetBaseAddress(gamemodule) + Addr(rva)`).
 
-Validated on The Alters (`TheAlters.jmap`, image base `0x140000000`, UE 5.5):
+Validated on a UE 5.5 dump (image base 0x140000000):
 6413 classes / 2068 structs / 1320 enums in ~46 s, clean compile, spot checks
 (`FVector`=24, `FString`=16, `FName`=8, `FRigModuleReference`=368,
 `FConstraintInstance`=648, `UGameInstance` RVA `0x14389b5d0`→`0x389b5d0`) all

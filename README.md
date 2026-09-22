@@ -62,7 +62,7 @@ back to the repo.
 
 ## Verified on real input
 
-Full The Alters dump (`TheAlters.jmap`, image base `0x140000000`, UE 5.5):
+Full game dump (`Game.jmap`, image base `0x140000000`, UE 5.5):
 **6413 classes / 2068 structs / 1320 enums**, ~46 s generate, clean C++17
 compile, layout spot-checks match the dump. Module-filtered
 (`--modules P9Playable`) builds also compile. See `docs/skill.md` for numbers.
